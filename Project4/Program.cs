@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Text;
 
 namespace Project4
 {
@@ -6,30 +8,44 @@ namespace Project4
     {
         static void Main(string[] args)
         {
+            const int DEMO_SIZE = 10;
             bool loop = true;
+            int[] demoData = new int[DEMO_SIZE];
+            int input;
             while (loop)
             {
-                RunTest(500, 1000);
-                RunTest(1000, 1000);
-                RunTest(2000, 1000);
-                RunTest(3000, 1000);
-                RunTest(4000, 1000);
-                RunTest(5000, 1000);
-                RunTest(7500, 1000);
-                RunTest(10000, 1000);
-                RunTest(15000, 1000);
-
-                Console.WriteLine("\nRun Again?");
-                if (Console.ReadLine() != "y")
+                demoData = GenerateDataset(DEMO_SIZE, 10);
+                Console.WriteLine("\n1. Run Bubble Sort Test\n2. Run Quicksort Test\n3. Run Comparison Test\n4. Quit");
+                input = Convert.ToInt32(Console.ReadLine());
+                switch (input)
                 {
-                    loop = false;
+                    case 1: //Demonstrate Bubble Sort
+                        BubbleSort(ref demoData, true);
+                        break;
+                    case 2: //Demonstrate Quicksort
+                        Quicksort(ref demoData, 0, DEMO_SIZE - 1, true);
+                        break;
+                    case 3: //Run comparison test
+                        ComparisonTest(500, 1000);
+                        ComparisonTest(1000, 1000);
+                        ComparisonTest(2000, 1000);
+                        ComparisonTest(3000, 1000);
+                        ComparisonTest(4000, 1000);
+                        ComparisonTest(5000, 1000);
+                        ComparisonTest(7500, 1000);
+                        ComparisonTest(10000, 1000);
+                        ComparisonTest(15000, 1000);
+                        break;
+                    case 4: //Quit
+                        loop = false;
+                        break;
+                
                 }
             }
-
         }
 
 
-        static void BubbleSort(ref int[] data)
+        static void BubbleSort(ref int[] data, bool demo = false)
         {
             int size = data.Length;
             int temp;
@@ -37,6 +53,7 @@ namespace Project4
 
             while (noSwap == false) //While the array is not sorted
             {
+                if (demo) { printArray(data);}
                 noSwap = true;
                 for (int i = 0; i < size - 1; i++) //Make a pass
                 {
@@ -49,16 +66,19 @@ namespace Project4
                     }
                 }
             }
+            if (demo) { printArray(data); }
         }
 
 
-        static void Quicksort(ref int[] data, int low, int high)
+        static void Quicksort(ref int[] data, int low, int high, bool demo = false)
         {
             if (low < high)
             {
+                
                 int partitionIndex = Partition(ref data, low, high);
-                Quicksort(ref data, low, partitionIndex - 1);
-                Quicksort(ref data, partitionIndex + 1, high);                
+                Quicksort(ref data, low, partitionIndex - 1);                
+                Quicksort(ref data, partitionIndex + 1, high);
+                if (demo) { printArray(data); }
             }
         }
         static int Partition(ref int[] data, int low, int high)
@@ -96,13 +116,15 @@ namespace Project4
 
         static void printArray(int[] data)
         {
-            for (int i = 0; i < data.Length; i++)
+            string output = data[0].ToString();
+            for (int i = 1; i < data.Length; i++)
             {
-                Console.WriteLine(i + ": " + data[i] + "\n");
+                output += ", " + data[i];                
             }
+            Console.WriteLine("Data: " + output);
         }
 
-        static void RunTest(int size, int range)
+        static void ComparisonTest(int size, int range)
         {
             int[] array1 = GenerateDataset(size, range);
             int[] array2 = array1;
