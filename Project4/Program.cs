@@ -23,6 +23,7 @@ namespace Project4
                         BubbleSort(ref demoData, true);
                         break;
                     case 2: //Demonstrate Quicksort
+                        printArray(demoData);
                         Quicksort(ref demoData, 0, DEMO_SIZE - 1, true);
                         break;
                     case 3: //Run comparison test
@@ -72,35 +73,37 @@ namespace Project4
 
         static void Quicksort(ref int[] data, int low, int high, bool demo = false)
         {
-            if (low < high)
-            {
+            if (low < high) {
                 
-                int partitionIndex = Partition(ref data, low, high);
-                Quicksort(ref data, low, partitionIndex - 1);                
-                Quicksort(ref data, partitionIndex + 1, high);
-                if (demo) { printArray(data); }
+                int partitionIndex = Partition(ref data, low, high, demo);                
+                Quicksort(ref data, low, partitionIndex - 1, demo);                
+                Quicksort(ref data, partitionIndex + 1, high, demo);
+                
             }
         }
-        static int Partition(ref int[] data, int low, int high)
+        static int Partition(ref int[] data, int low, int high, bool demo = false)
         {
             int pivot = data[high];
+            if (demo) { Console.WriteLine("Pivot selected: " + pivot); }
             int i = low - 1;
             for (int j = low; j < high; j++)
             {
                 if (data[j] < pivot)
                 {
                     i++;
-                    Swap(ref data, i, j);
+                    Swap(ref data, i, j, demo);
                 }
             }
-            Swap(ref data, i + 1, high);
+            Swap(ref data, i + 1, high, demo);
+            if (demo) { printArray(data); }
             return i + 1;
         }
-        static void Swap(ref int[] data, int i, int j)
+        static void Swap(ref int[] data, int i, int j, bool demo = false)
         {
+            if (demo) { Console.WriteLine("[" + i + "]: " + data[i] + " swapped with [" + j + "]:" + data[j]); }
             int temp = data[i];
             data[i] = data[j];
-            data[j] = temp;
+            data[j] = temp;            
         }
 
         static int[] GenerateDataset(int size, int range)
