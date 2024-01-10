@@ -110,7 +110,7 @@ namespace Project4
         {
             Random random = new Random();
             int[] dataset = new int[size];
-            for (int i = 0; i < size - 1; i++)
+            for (int i = 0; i < size; i++)
             {
                 dataset[i] = random.Next(0, range);
             }
